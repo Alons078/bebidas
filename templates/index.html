@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Depósito Mix | Cervejas, whiskies e destilados</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Verificação de maioridade -->
+  <div id="age-gate" class="overlay" hidden>
+    <div class="modal center">
+      <div class="brand-mark big">DM</div>
+      <h2>Você tem 18 anos ou mais?</h2>
+      <p class="muted">A venda de bebidas alcoólicas é proibida para menores de 18 anos.</p>
+      <div class="row">
+        <button id="age-yes" class="btn primary">Sim, tenho 18+</button>
+        <button id="age-no" class="btn ghost">Não</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark">DM</span>
+      <div>
+        <h1>Depósito Mix</h1>
+        <p>Cervejas · Whiskies · Destilados</p>
+      </div>
+    </div>
+    <span id="store-badge" class="badge">…</span>
+  </header>
+
+  <section class="hero">
+    <h2>Gelada, no ponto e sem fila.</h2>
+    <p>Monte seu pedido aqui e <strong>retire no balcão</strong>. Não fazemos entrega.</p>
+  </section>
+
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="Buscar produto…" autocomplete="off">
+    <nav id="tabs" aria-label="Categorias"></nav>
+  </div>
+
+  <main id="grid" class="grid" aria-live="polite"></main>
+
+  <footer>
+    <p>Venda proibida para menores de 18 anos. Beba com moderação.</p>
+    <p class="muted">© Depósito Mix</p>
+  </footer>
+
+  <button id="cart-btn" class="cart-fab" hidden>
+    <span>🛒 <b id="cart-count">0</b> itens</span>
+    <span id="cart-total">R$ 0,00</span>
+  </button>
+
+  <!-- Carrinho -->
+  <div id="drawer-bg" class="drawer-bg" hidden></div>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <h3>Seu pedido</h3>
+      <button id="drawer-close" class="icon-btn" aria-label="Fechar">✕</button>
+    </div>
+    <div id="cart-lines" class="cart-lines"></div>
+    <div class="drawer-foot">
+      <div class="total-row"><span>Total</span><b id="drawer-total">R$ 0,00</b></div>
+      <button id="go-checkout" class="btn primary block">Continuar</button>
+    </div>
+  </aside>
+
+  <!-- Dados do cliente -->
+  <div id="checkout" class="overlay" hidden>
+    <form id="checkout-form" class="modal" novalidate>
+      <h3>Finalizar pedido</h3>
+      <p class="muted small">Retirada no balcão. Avisaremos pelo status do pedido quando estiver pronto.</p>
+      <label>Seu nome
+        <input id="co-name" required maxlength="80" autocomplete="name">
+      </label>
+      <label>Telefone (com DDD)
+        <input id="co-phone" required inputmode="tel" placeholder="(21) 99999-9999" autocomplete="tel">
+      </label>
+      <label>Pagamento na retirada
+        <select id="co-pay">
+          <option value="pix">Pix</option>
+          <option value="dinheiro">Dinheiro</option>
+          <option value="cartao">Cartão</option>
+        </select>
+      </label>
+      <label>Observações (opcional)
+        <textarea id="co-notes" rows="2" maxlength="300"></textarea>
+      </label>
+      <div class="total-row"><span>Total</span><b id="co-total">R$ 0,00</b></div>
+      <p id="co-error" class="error" hidden></p>
+      <div class="row">
+        <button type="button" id="co-cancel" class="btn ghost">Voltar</button>
+        <button type="submit" id="co-submit" class="btn primary">Confirmar pedido</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

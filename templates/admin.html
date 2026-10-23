@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Admin | Depósito Mix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="admin">
+{% if not logged %}
+  <main class="login">
+    <form method="post" action="/admin/login" class="modal center">
+      <div class="brand-mark big">DM</div>
+      <h2>Painel do Depósito</h2>
+      {% if error %}<p class="error">{{ error }}</p>{% endif %}
+      <label>Senha
+        <input type="password" name="password" required autofocus>
+      </label>
+      <button class="btn primary block" type="submit">Entrar</button>
+    </form>
+  </main>
+{% else %}
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark">DM</span>
+      <div><h1>Painel</h1><p>Depósito Mix</p></div>
+    </div>
+    <div class="row tight">
+      <button id="sound-btn" class="btn ghost small">🔔 Ativar som</button>
+      <form method="post" action="/admin/logout"><button class="btn ghost small">Sair</button></form>
+    </div>
+  </header>
+
+  <nav class="admin-tabs" id="admin-tabs">
+    <button data-tab="orders" class="active">Pedidos <span id="orders-badge" class="pill" hidden>0</span></button>
+    <button data-tab="history">Histórico</button>
+    <button data-tab="products">Produtos</button>
+    <button data-tab="store">Loja</button>
+  </nav>
+
+  <main class="admin-main">
+    <!-- Pedidos ativos -->
+    <section id="tab-orders">
+      <div id="orders-list" class="orders"></div>
+    </section>
+
+    <!-- Histórico -->
+    <section id="tab-history" hidden>
+      <div id="today-summary" class="panel"></div>
+      <div id="history-list" class="orders"></div>
+    </section>
+
+    <!-- Produtos -->
+    <section id="tab-products" hidden>
+      <form id="product-form" class="panel form-grid">
+        <h3 id="form-title">Novo produto</h3>
+        <input type="hidden" id="p-id">
+        <input type="hidden" id="p-image">
+        <label>Nome<input id="p-name" required maxlength="100"></label>
+        <label>Categoria
+          <input id="p-cat" list="cat-list" required maxlength="40" placeholder="Cervejas, Whisky…">
+          <datalist id="cat-list"></datalist>
+        </label>
+        <label>Preço (R$)<input id="p-price" required inputmode="decimal" placeholder="7,50"></label>
+        <label>Estoque<input id="p-stock" type="number" min="0" value="0" required></label>
+        <label class="wide">Descrição<input id="p-desc" maxlength="300"></label>
+        <label class="wide">Foto
+          <input id="p-file" type="file" accept="image/*">
+        </label>
+        <img id="p-preview" class="preview" alt="" hidden>
+        <label class="check wide"><input id="p-active" type="checkbox" checked> Visível na loja</label>
+        <p id="p-error" class="error wide" hidden></p>
+        <div class="row wide">
+          <button type="button" id="p-reset" class="btn ghost" hidden>Cancelar edição</button>
+          <button type="submit" id="p-save" class="btn primary">Salvar produto</button>
+        </div>
+      </form>
+      <div id="products-list" class="plist"></div>
+    </section>
+
+    <!-- Loja -->
+    <section id="tab-store" hidden>
+      <div class="panel">
+        <h3>Status da loja</h3>
+        <p id="store-state" class="muted"></p>
+        <button id="store-toggle" class="btn primary">…</button>
+        <p class="muted small">Com a loja fechada, os clientes veem o cardápio mas não conseguem fazer pedidos.</p>
+      </div>
+    </section>
+  </main>
+  <div id="toast" class="toast" hidden></div>
+  <script src="{{ url_for('static', filename='admin.js') }}"></script>
+{% endif %}
+</body>
+</html>
